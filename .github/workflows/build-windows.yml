@@ -34,6 +34,7 @@ jobs:
           
     - name: Automatisch Tag erzeugen
       id: tagger
+      shell: bash
       run: |
         TAG="auto-$(date +'%Y%m%d-%H%M%S')"
         git config user.name "github-actions"
@@ -41,6 +42,7 @@ jobs:
         git tag $TAG
         git push origin $TAG
         echo "tag=$TAG" >> $GITHUB_OUTPUT
+
         
     - name: Release erstellen
       uses: softprops/action-gh-release@v2
