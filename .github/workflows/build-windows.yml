@@ -42,7 +42,6 @@ jobs:
         git tag $TAG
         git push origin $TAG
         echo "tag=$TAG" >> $GITHUB_OUTPUT
-
         
     - name: Release erstellen
       uses: softprops/action-gh-release@v2
