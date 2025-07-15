@@ -1,0 +1,33 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Visual Studio Developer Command Prompt einrichten
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: CMake installieren
+      uses: lukka/get-cmake@v3
+
+    - name: Projekt bauen
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+        cmake --build . --config Release
+
+    - name: EXE als Artefakt hochladen
+      uses: actions/upload-artifact@v4
+      with:
+        name: tetris-exe
+        path: build/**/*.exe
