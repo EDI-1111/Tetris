@@ -30,28 +30,12 @@ jobs:
         path: |
           **/Release/*.exe
 
-name: Build Windows EXE
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  # Automatisch bei Tags ein Release erstellen
-  release:
-    types: [created]
 
-jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-      # ... (deine bisherigen Schritte)
-      - name: EXE als Artefakt hochladen
-        uses: actions/upload-artifact@v4
-        with:
-          name: tetris-exe
-          path: |
-            **/Release/*.exe
+
+ 
+
+
 
   release:
     needs: build
