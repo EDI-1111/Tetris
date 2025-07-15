@@ -29,7 +29,9 @@ jobs:
         name: tetris-exe
         path: |
           **/Release/*.exe
-name: build EXE
+
+          
+name:  EXE
 
 on:
   push:
