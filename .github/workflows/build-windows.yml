@@ -1,0 +1,70 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Repository auschecken
+      uses: actions/checkout@v4
+
+    - name: Visual Studio Developer Command Prompt einrichten
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Projekt mit MSBuild bauen
+      run: msbuild Tetris.sln /p:Configuration=Release
+
+    - name: Gefundene EXE-Dateien auflisten
+      run: cmd /c "dir /s /b *.exe"
+
+    - name: EXE als Artefakt hochladen
+      uses: actions/upload-artifact@v4
+      with:
+        name: tetris-exe
+        path: |
+          **/Release/*.exe
+
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  # Automatisch bei Tags ein Release erstellen
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      # ... (deine bisherigen Schritte)
+      - name: EXE als Artefakt hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: tetris-exe
+          path: |
+            **/Release/*.exe
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    if: github.event_name == 'release'
+    steps:
+      - name: Release-Asset herunterladen
+        uses: actions/download-artifact@v4
+        with:
+          name: tetris-exe
+          path: ./release-exe
+
+      - name: Release-Asset anhängen
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./release-exe/*.exe
