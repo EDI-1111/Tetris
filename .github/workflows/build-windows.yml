@@ -46,7 +46,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tetris-exe
-          path: ./release-exe
+          path: |
+            **/Release/*.exe
 
       - name: Release-Asset anhängen
         uses: softprops/action-gh-release@v2
